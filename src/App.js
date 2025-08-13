@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import {
   Wrench,
   Hammer,
-  Drill,
+  PlugZap,
   // Saw,            // removed: not exported by lucide-react ESM CDN
   // Crane,          // removed: not exported by lucide-react ESM CDN
   HardHat,
@@ -90,7 +90,7 @@ export function filterListings(listings, q, activeCategory) {
 // ---------------- Mock Data ----------------
 const categories = [
   { key: "all", label: "All", icon: Wrench },
-  { key: "power-tools", label: "Power Tools", icon: Drill },
+  { key: "power-tools", label: "Power Tools", icon: PlugZap },
   { key: "woodworking", label: "Woodworking", icon: Ruler }, // replaced Saw -> Ruler (exported)
   { key: "construction", label: "Construction", icon: HardHat }, // replaced Crane -> HardHat (exported)
   { key: "transport", label: "Transport", icon: Truck },
@@ -535,10 +535,23 @@ function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }) {
 }
 
 function ListingCard({ listing, premium, showManage }) {
+  const [imgError, setImgError] = useState(false);
   return (
     <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
-      <div className="relative">
-        <img src={listing.img} alt={listing.title} className="h-48 w-full object-cover" />
+      <div className="relative w-full aspect-square bg-neutral-200">
+        {listing.img && !imgError ? (
+          <img
+            src={listing.img}
+            alt={listing.title}
+            loading="lazy"
+            onError={() => setImgError(true)}
+            className="h-full w-full object-cover"
+          />
+        ) : (
+          <div className="flex h-full w-full items-center justify-center text-neutral-400">
+            <ImagePlus className="h-10 w-10" />
+          </div>
+        )}
         {premium && (
           <Badge className="absolute left-3 top-3 bg-orange-600 hover:bg-orange-700">Premium</Badge>
         )}
