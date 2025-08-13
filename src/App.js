@@ -593,11 +593,13 @@ function TopNav({ role, setRole, onCreate, onOpenPlans }) {
           <Badge variant="secondary" className="ml-2">Beta</Badge>
         </div>
         <nav className="hidden md:flex items-center gap-6">
+ codex/refactor-interface-design-and-layout-ojhcsr
           {navLinks.map((l) => (
             <a key={l.label} className="hover:text-orange-600" href={l.href}>
-              {l.label}
-            </a>
+             {l.label}
+             </a>
           ))}
+ main
         </nav>
         <div className="flex items-center gap-2">
           <Sheet>
@@ -608,11 +610,13 @@ function TopNav({ role, setRole, onCreate, onOpenPlans }) {
             </SheetTrigger>
             <SheetContent side="left" className="w-64">
               <nav className="mt-4 flex flex-col gap-4 text-sm">
+codex/refactor-interface-design-and-layout-ojhcsr
                 {navLinks.map((l) => (
                   <a key={l.label} href={l.href}>
-                    {l.label}
+                   {l.label}
                   </a>
                 ))}
+main
               </nav>
             </SheetContent>
           </Sheet>
@@ -625,6 +629,50 @@ function TopNav({ role, setRole, onCreate, onOpenPlans }) {
               <Plus className="mr-2 h-4 w-4" /> New listing
             </Button>
           )}
+ codex/refactor-interface-design-and-layout-ojhcsr
+          <Dialog>
+          <DialogTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <User className="h-5 w-5" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>{logged ? "Your account" : "Welcome back"}</DialogTitle>
+              <DialogDescription>
+                {logged ? "Manage your profile and preferences." : "Sign in to book or manage your listings."}
+              </DialogDescription>
+            </DialogHeader>
+            {logged ? (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Avatar>
+                    <AvatarImage src="https://i.pravatar.cc/100?img=67" />
+                    <AvatarFallback>MX</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <div className="font-medium">MaxTools Pro</div>
+                    <div className="text-xs text-neutral-500">Business - Premium</div>
+                  </div>
+                </div>
+                <Button variant="outline" onClick={() => setLogged(false)}>
+                  <LogOut className="mr-2 h-4 w-4" /> Sign out
+                </Button>
+              </div>
+            ) : (
+              <div className="grid gap-3">
+                <Input placeholder="Email" />
+                <Input placeholder="Password" type="password" />
+                <Button className="bg-orange-600 hover:bg-orange-700" onClick={() => setLogged(true)}>
+                  <LogIn className="mr-2 h-4 w-4" /> Sign in
+                </Button>
+                <Button variant="outline">Create account</Button>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+ main
           <Button className="bg-orange-600 hover:bg-orange-700 rounded-full px-4" onClick={onOpenPlans}>
             <Star className="mr-2 h-4 w-4" /> Premium
           </Button>
