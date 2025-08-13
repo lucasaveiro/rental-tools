@@ -22,6 +22,7 @@ import {
   ImagePlus,
   Building2,
   Check,
+  Menu,
 } from "lucide-react";
 
 // ---------------- Minimal UI component stubs ----------------
@@ -239,6 +240,7 @@ export default function ToolShareApp() {
   const [dateRange, setDateRange] = useState({ from: undefined, to: undefined });
   const [showCreate, setShowCreate] = useState(false);
   const [showPlans, setShowPlans] = useState(false);
+  const [showMobileFilters, setShowMobileFilters] = useState(false);
 
   const filtered = useMemo(() => filterListings(allListings, query, activeCategory), [activeCategory, query]);
 
@@ -258,15 +260,15 @@ export default function ToolShareApp() {
         <div className="absolute inset-0 bg-gradient-to-b from-orange-50 to-white" />
         <div className="relative mx-auto max-w-7xl px-6 py-16 md:py-24">
           <div className="grid gap-10 md:grid-cols-2 md:items-center">
-            <div>
+            <div className="text-center md:text-left">
               <Badge className="bg-orange-500 hover:bg-orange-600 text-white mb-4">New - Premium spotlight</Badge>
-              <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
-                Rent <span className="text-orange-600">tools & machinery</span> like booking a stay
+              <h1 className="font-display text-5xl md:text-6xl font-bold tracking-tight">
+                Rent <span className="text-orange-600">tools &amp; machinery</span> like booking a stay
               </h1>
-              <p className="mt-4 text-neutral-600 text-lg">
+              <p className="mt-4 text-neutral-600 text-lg md:pr-12 max-w-xl mx-auto md:mx-0">
                 A marketplace inspired by Airbnb - clean, fast and built for pros. Browse categories, compare prices per day, and book with insurance.
               </p>
-              <div className="mt-6 flex flex-col sm:flex-row gap-3">
+              <div className="mt-6 flex flex-col sm:flex-row gap-3 justify-center md:justify-start">
                 <Button className="bg-orange-600 hover:bg-orange-700" size="lg" onClick={() => setShowPlans(true)}>
                   <Star className="mr-2 h-4 w-4" />
                   Upgrade business plan
@@ -296,9 +298,9 @@ export default function ToolShareApp() {
               </div>
 
               {/* Search Bar */}
-              <div className="mt-8 rounded-2xl border p-3 shadow-sm">
-                <div className="flex flex-col md:flex-row items-stretch gap-3">
-                  <div className="flex-1 flex items-center gap-2">
+              <div className="mt-10">
+                <div className="hidden md:flex items-center rounded-full bg-white shadow-lg divide-x">
+                  <div className="flex items-center gap-2 px-5 flex-1">
                     <Search className="h-5 w-5 text-neutral-500" />
                     <Input
                       placeholder='Search tools, e.g. "mini excavator"'
@@ -307,15 +309,15 @@ export default function ToolShareApp() {
                       className="border-none focus-visible:ring-0"
                     />
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 px-5">
                     <MapPin className="h-5 w-5 text-neutral-500" />
-                    <Input className="w-48" placeholder="City or ZIP" />
+                    <Input className="w-40 border-none focus-visible:ring-0" placeholder="City or ZIP" />
                   </div>
-                  <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 px-5">
                     <CalendarDays className="h-5 w-5 text-neutral-500" />
                     <Sheet>
                       <SheetTrigger asChild>
-                        <Button variant="outline" className="min-w-[180px] justify-between">
+                        <Button variant="ghost" className="justify-between px-0">
                           {dateRange.from && dateRange.to ? (
                             <span>
                               {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
@@ -333,9 +335,7 @@ export default function ToolShareApp() {
                           <Calendar
                             mode="range"
                             selected={dateRange}
-                            onSelect={(r) =>
-                              setDateRange(r || { from: undefined, to: undefined })
-                            }
+                            onSelect={(r) => setDateRange(r || { from: undefined, to: undefined })}
                             numberOfMonths={2}
                             className="rounded-md border"
                           />
@@ -343,7 +343,71 @@ export default function ToolShareApp() {
                       </SheetContent>
                     </Sheet>
                   </div>
-                  <Button className="bg-orange-600 hover:bg-orange-700">Search</Button>
+                  <Button className="ml-4 rounded-full bg-orange-600 hover:bg-orange-700 flex items-center gap-2 px-6">
+                    <Search className="h-4 w-4" /> Search
+                  </Button>
+                </div>
+                <div className="md:hidden">
+                  {showMobileFilters ? (
+                    <div className="space-y-3 rounded-3xl border p-4 shadow-lg bg-white">
+                      <div className="flex items-center gap-2">
+                        <Search className="h-5 w-5 text-neutral-500" />
+                        <Input
+                          placeholder='Search tools, e.g. "mini excavator"'
+                          value={query}
+                          onChange={(e) => setQuery(e.target.value)}
+                          className="border-none focus-visible:ring-0"
+                        />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <MapPin className="h-5 w-5 text-neutral-500" />
+                        <Input className="flex-1 border-none focus-visible:ring-0" placeholder="City or ZIP" />
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <CalendarDays className="h-5 w-5 text-neutral-500" />
+                        <Sheet>
+                          <SheetTrigger asChild>
+                            <Button variant="outline" className="flex-1 justify-between">
+                              {dateRange.from && dateRange.to ? (
+                                <span>
+                                  {dateRange.from.toLocaleDateString()} - {dateRange.to.toLocaleDateString()}
+                                </span>
+                              ) : (
+                                <span>Select dates</span>
+                              )}
+                            </Button>
+                          </SheetTrigger>
+                          <SheetContent side="bottom" className="h-[70vh]">
+                            <SheetHeader>
+                              <SheetTitle>Select your rental window</SheetTitle>
+                            </SheetHeader>
+                            <div className="py-4">
+                              <Calendar
+                                mode="range"
+                                selected={dateRange}
+                                onSelect={(r) => setDateRange(r || { from: undefined, to: undefined })}
+                                numberOfMonths={2}
+                                className="rounded-md border"
+                              />
+                            </div>
+                          </SheetContent>
+                        </Sheet>
+                      </div>
+                      <Button
+                        className="w-full rounded-full bg-orange-600 hover:bg-orange-700 flex items-center justify-center gap-2"
+                        onClick={() => setShowMobileFilters(false)}
+                      >
+                        <Search className="h-4 w-4" /> Search
+                      </Button>
+                    </div>
+                  ) : (
+                    <Button
+                      className="w-full rounded-full bg-orange-600 hover:bg-orange-700 flex items-center justify-center gap-2"
+                      onClick={() => setShowMobileFilters(true)}
+                    >
+                      <Search className="h-5 w-5" /> Filters
+                    </Button>
+                  )}
                 </div>
               </div>
             </div>
@@ -351,7 +415,7 @@ export default function ToolShareApp() {
             <div className="relative">
               <div className="aspect-[4/3] w-full overflow-hidden rounded-3xl border shadow-lg">
                 <img
-                  src="https://images.unsplash.com/photo-1508387027616-4d1f0d57e3a6?q=80&w=1600&auto=format&fit=crop"
+                  src="https://images.unsplash.com/photo-1591508513884-1e39fa00a811?q=80&w=1600&auto=format&fit=crop"
                   alt="Tools hero"
                   className="h-full w-full object-cover"
                 />
@@ -375,7 +439,7 @@ export default function ToolShareApp() {
       <Separator />
 
       {/* Category Pills */}
-      <section className="mx-auto max-w-7xl px-6 py-8">
+      <section className="mx-auto max-w-7xl px-6 py-12">
         <ScrollArea className="w-full whitespace-nowrap">
           <div className="flex gap-3">
             {categories.map(({ key, label, icon: Icon }) => (
@@ -396,7 +460,7 @@ export default function ToolShareApp() {
       </section>
 
       {/* Premium Spotlight */}
-      <section className="mx-auto max-w-7xl px-6 pb-2">
+      <section className="mx-auto max-w-7xl px-6 py-12">
         <div className="flex items-center justify-between mb-4">
           <h2 className="text-xl font-semibold">Premium spotlight</h2>
           <Button variant="ghost" className="text-orange-600 hover:text-orange-700" onClick={() => setShowPlans(true)}>
@@ -411,7 +475,7 @@ export default function ToolShareApp() {
       </section>
 
       {/* All Listings */}
-      <section className="mx-auto max-w-7xl px-6 py-10">
+      <section className="mx-auto max-w-7xl px-6 py-12">
         <h2 className="text-xl font-semibold mb-4">Explore tools</h2>
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {filtered.map((l) => (
@@ -520,22 +584,37 @@ export default function ToolShareApp() {
 // ---------------- Components ----------------
 function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }) {
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
+    <header className="sticky top-0 z-50 w-full border-b bg-neutral-50/80 backdrop-blur">
+      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 text-sm">
         <div className="flex items-center gap-3">
-          <div className="h-9 w-9 grid place-content-center rounded-xl bg-orange-600 text-white font-bold">TS</div>
+          <div className="h-8 w-8 grid place-content-center rounded-lg bg-orange-600 text-white font-bold">TS</div>
           <div className="font-semibold">ToolShare</div>
           <Badge variant="secondary" className="ml-2">Beta</Badge>
         </div>
-        <nav className="hidden md:flex items-center gap-6 text-sm">
+        <nav className="hidden md:flex items-center gap-6">
           <a className="hover:text-orange-600" href="#">How it works</a>
           <a className="hover:text-orange-600" href="#">Categories</a>
           <a className="hover:text-orange-600" href="#">Safety</a>
           <a className="hover:text-orange-600" href="#">Support</a>
         </nav>
         <div className="flex items-center gap-2">
+          <Sheet>
+            <SheetTrigger asChild>
+              <Button variant="ghost" size="icon" className="md:hidden">
+                <Menu className="h-5 w-5" />
+              </Button>
+            </SheetTrigger>
+            <SheetContent side="left" className="w-64">
+              <nav className="mt-4 flex flex-col gap-4 text-sm">
+                <a href="#">How it works</a>
+                <a href="#">Categories</a>
+                <a href="#">Safety</a>
+                <a href="#">Support</a>
+              </nav>
+            </SheetContent>
+          </Sheet>
           <div className="hidden sm:flex items-center gap-2 pr-3 mr-3 border-r">
-            <Label htmlFor="role-switch" className="mr-2 text-sm">Business mode</Label>
+            <Label htmlFor="role-switch" className="mr-2">Business mode</Label>
             <Switch id="role-switch" checked={role === "business"} onCheckedChange={(v) => setRole(v ? "business" : "customer")} />
           </div>
           {role === "business" && (
@@ -545,8 +624,8 @@ function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }) {
           )}
           <Dialog>
             <DialogTrigger asChild>
-              <Button variant="ghost" className="gap-2">
-                <User className="h-4 w-4" /> {logged ? "Account" : "Sign in"}
+              <Button variant="ghost" size="icon">
+                <User className="h-5 w-5" />
               </Button>
             </DialogTrigger>
             <DialogContent className="max-w-md">
@@ -584,11 +663,11 @@ function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }) {
               )}
             </DialogContent>
           </Dialog>
-          <Button className="bg-orange-600 hover:bg-orange-700" onClick={onOpenPlans}>
+          <Button className="bg-orange-600 hover:bg-orange-700 rounded-full px-4" onClick={onOpenPlans}>
             <Star className="mr-2 h-4 w-4" /> Premium
           </Button>
           <Button variant="ghost" size="icon" className="ml-1">
-            <Settings className="h-4 w-4" />
+            <Settings className="h-5 w-5" />
           </Button>
         </div>
       </div>
@@ -600,7 +679,7 @@ function ListingCard({ listing, premium, showManage }) {
   return (
     <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
       <div className="relative">
-        <img src={listing.img} alt={listing.title} className="h-48 w-full object-cover" />
+        <img src={listing.img} alt={listing.title} className="h-40 w-full object-cover md:h-52" />
         {premium && (
           <Badge className="absolute left-3 top-3 bg-orange-600 hover:bg-orange-700">Premium</Badge>
         )}
@@ -626,12 +705,12 @@ function ListingCard({ listing, premium, showManage }) {
           <span className="text-sm text-neutral-600">{listing.business.name}</span>
         </div>
       </CardContent>
-      <CardFooter className="flex items-center justify-between p-4 pt-0">
-        <Button variant="outline" className="gap-2"><CalendarDays className="h-4 w-4" /> Check availability</Button>
+      <CardFooter className="flex items-center gap-2 justify-between p-4 pt-0">
+        <Button variant="outline" className="gap-2 flex-1"><CalendarDays className="h-4 w-4" /> Check availability</Button>
         {showManage ? (
-          <Button className="bg-orange-600 hover:bg-orange-700">Manage</Button>
+          <Button className="bg-orange-600 hover:bg-orange-700 flex-1">Manage</Button>
         ) : (
-          <Button className="bg-orange-600 hover:bg-orange-700">Book now</Button>
+          <Button className="bg-orange-600 hover:bg-orange-700 flex-1">Book now</Button>
         )}
       </CardFooter>
     </Card>
