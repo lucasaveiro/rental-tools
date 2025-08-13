@@ -25,19 +25,81 @@ import {
 } from "lucide-react";
 
 // ---------------- Minimal UI component stubs ----------------
-const Button = (props) => <button {...props} />;
-const Input = (props) => <input {...props} />;
-const Textarea = (props) => <textarea {...props} />;
-const Card = (props) => <div {...props} />;
-const CardContent = (props) => <div {...props} />;
-const CardDescription = (props) => <p {...props} />;
-const CardFooter = (props) => <div {...props} />;
-const CardHeader = (props) => <div {...props} />;
-const CardTitle = (props) => <h3 {...props} />;
-const Badge = (props) => <span {...props} />;
-const Avatar = (props) => <div {...props} />;
-const AvatarImage = (props) => <img {...props} />;
-const AvatarFallback = (props) => <div {...props} />;
+const Button = ({ className = "", ...props }) => (
+  <button
+    className={cx(
+      "inline-flex items-center justify-center rounded-md px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-orange-500 disabled:opacity-50",
+      className
+    )}
+    {...props}
+  />
+);
+const Input = ({ className = "", ...props }) => (
+  <input
+    className={cx(
+      "w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500",
+      className
+    )}
+    {...props}
+  />
+);
+const Textarea = ({ className = "", ...props }) => (
+  <textarea
+    className={cx(
+      "w-full rounded-md border border-neutral-300 bg-white px-3 py-2 text-sm placeholder-neutral-500 focus:outline-none focus:ring-2 focus:ring-orange-500/20 focus:border-orange-500",
+      className
+    )}
+    {...props}
+  />
+);
+const Card = ({ className = "", ...props }) => (
+  <div
+    className={cx("rounded-lg border bg-white shadow-sm", className)}
+    {...props}
+  />
+);
+const CardContent = ({ className = "", ...props }) => (
+  <div className={cx("px-6 py-4", className)} {...props} />
+);
+const CardDescription = ({ className = "", ...props }) => (
+  <p className={cx("text-sm text-neutral-500", className)} {...props} />
+);
+const CardFooter = ({ className = "", ...props }) => (
+  <div className={cx("px-6 pb-6", className)} {...props} />
+);
+const CardHeader = ({ className = "", ...props }) => (
+  <div className={cx("px-6 pt-6", className)} {...props} />
+);
+const CardTitle = ({ className = "", ...props }) => (
+  <h3 className={cx("text-lg font-semibold", className)} {...props} />
+);
+const Badge = ({ className = "", ...props }) => (
+  <span
+    className={cx(
+      "inline-flex items-center rounded-md border px-2 py-1 text-xs font-medium",
+      className
+    )}
+    {...props}
+  />
+);
+const Avatar = ({ className = "", ...props }) => (
+  <div
+    className={cx("relative h-10 w-10 overflow-hidden rounded-full", className)}
+    {...props}
+  />
+);
+const AvatarImage = ({ className = "", ...props }) => (
+  <img className={cx("h-full w-full object-cover", className)} {...props} />
+);
+const AvatarFallback = ({ className = "", ...props }) => (
+  <div
+    className={cx(
+      "flex h-full w-full items-center justify-center bg-neutral-100 text-neutral-500",
+      className
+    )}
+    {...props}
+  />
+);
 const Tabs = ({ children }) => <div>{children}</div>;
 const TabsContent = ({ children }) => <div>{children}</div>;
 const TabsList = ({ children }) => <div>{children}</div>;
