@@ -576,13 +576,14 @@ export default function ToolShareApp() {
 }
 
 // ---------------- Components ----------------
+const navLinks = [
+  { label: "How it works", href: "#" },
+  { label: "Categories", href: "#" },
+  { label: "Safety", href: "#" },
+  { label: "Support", href: "#" },
+];
+
 function TopNav({ role, setRole, onCreate, onOpenPlans }) {
-  const links = [
-    { label: "How it works", href: "#" },
-    { label: "Categories", href: "#" },
-    { label: "Safety", href: "#" },
-    { label: "Support", href: "#" },
-  ];
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-neutral-50/80 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 text-sm">
@@ -592,7 +593,7 @@ function TopNav({ role, setRole, onCreate, onOpenPlans }) {
           <Badge variant="secondary" className="ml-2">Beta</Badge>
         </div>
         <nav className="hidden md:flex items-center gap-6">
-          {links.map((l) => (
+          {navLinks.map((l) => (
             <a key={l.label} className="hover:text-orange-600" href={l.href}>
               {l.label}
             </a>
@@ -607,7 +608,7 @@ function TopNav({ role, setRole, onCreate, onOpenPlans }) {
             </SheetTrigger>
             <SheetContent side="left" className="w-64">
               <nav className="mt-4 flex flex-col gap-4 text-sm">
-                {links.map((l) => (
+                {navLinks.map((l) => (
                   <a key={l.label} href={l.href}>
                     {l.label}
                   </a>
