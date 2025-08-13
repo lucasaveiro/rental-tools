@@ -1,19 +1,4 @@
 import React, { useMemo, useState } from "react";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
-import { Switch } from "@/components/ui/switch";
-import { Calendar } from "@/components/ui/calendar";
-import { Label } from "@/components/ui/label";
-import { Separator } from "@/components/ui/separator";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import {
   Wrench,
   Hammer,
@@ -39,24 +24,58 @@ import {
   Check,
 } from "lucide-react";
 
-// ---------------- Types ----------------
-type DateRange = { from?: Date; to?: Date };
+// ---------------- Minimal UI component stubs ----------------
+const Button = (props) => <button {...props} />;
+const Input = (props) => <input {...props} />;
+const Textarea = (props) => <textarea {...props} />;
+const Card = (props) => <div {...props} />;
+const CardContent = (props) => <div {...props} />;
+const CardDescription = (props) => <p {...props} />;
+const CardFooter = (props) => <div {...props} />;
+const CardHeader = (props) => <div {...props} />;
+const CardTitle = (props) => <h3 {...props} />;
+const Badge = (props) => <span {...props} />;
+const Avatar = (props) => <div {...props} />;
+const AvatarImage = (props) => <img {...props} />;
+const AvatarFallback = (props) => <div {...props} />;
+const Tabs = ({ children }) => <div>{children}</div>;
+const TabsContent = ({ children }) => <div>{children}</div>;
+const TabsList = ({ children }) => <div>{children}</div>;
+const TabsTrigger = ({ children, ...props }) => <button {...props}>{children}</button>;
+const Select = ({ children }) => <div>{children}</div>;
+const SelectContent = ({ children }) => <div>{children}</div>;
+const SelectItem = ({ children, ...props }) => <div {...props}>{children}</div>;
+const SelectTrigger = ({ children, ...props }) => <div {...props}>{children}</div>;
+const SelectValue = ({ children, ...props }) => <span {...props}>{children}</span>;
+const Dialog = ({ children }) => <div>{children}</div>;
+const DialogContent = ({ children, ...props }) => <div {...props}>{children}</div>;
+const DialogDescription = ({ children }) => <p>{children}</p>;
+const DialogHeader = ({ children }) => <div>{children}</div>;
+const DialogTitle = ({ children }) => <h2>{children}</h2>;
+const DialogTrigger = ({ children, ...props }) => <div {...props}>{children}</div>;
+const Sheet = ({ children }) => <div>{children}</div>;
+const SheetContent = ({ children }) => <div>{children}</div>;
+const SheetHeader = ({ children }) => <div>{children}</div>;
+const SheetTitle = ({ children }) => <h2>{children}</h2>;
+const SheetTrigger = ({ children, ...props }) => <div {...props}>{children}</div>;
+const Switch = (props) => <input type="checkbox" {...props} />;
+const Calendar = (props) => <input type="date" {...props} />;
+const Label = ({ children, ...props }) => <label {...props}>{children}</label>;
+const Separator = (props) => <hr {...props} />;
+const ScrollArea = ({ children, ...props }) => <div {...props}>{children}</div>;
 
 // ---------------- Helpers (ASCII-safe) ----------------
-function cx(...classes: (string | false | undefined)[]) {
+// Simple className join helper
+function cx(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-function Currency({ value }: { value: number }) {
+function Currency({ value }) {
   return <span className="font-semibold">R$ {value.toFixed(0)}</span>;
 }
 
 // Pure function for filtering (so we can unit-test)
-export function filterListings(
-  listings: Array<any>,
-  q: string,
-  activeCategory: string
-) {
+export function filterListings(listings, q, activeCategory) {
   const query = (q || "").toLowerCase().trim();
   return listings.filter((l) => {
     const matchCategory = activeCategory === "all" || l.category === activeCategory;
@@ -150,12 +169,12 @@ const allListings = [
 
 // ---------------- Main App ----------------
 export default function ToolShareApp() {
-  const [role, setRole] = useState<"customer" | "business">("customer");
+  const [role, setRole] = useState("customer");
   const [logged, setLogged] = useState(false);
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   // Ensure a consistent shape for the date range to avoid runtime/build issues.
-  const [dateRange, setDateRange] = useState<DateRange>({ from: undefined, to: undefined });
+  const [dateRange, setDateRange] = useState({ from: undefined, to: undefined });
   const [showCreate, setShowCreate] = useState(false);
   const [showPlans, setShowPlans] = useState(false);
 
@@ -252,8 +271,8 @@ export default function ToolShareApp() {
                           <Calendar
                             mode="range"
                             selected={dateRange}
-                            onSelect={(r: DateRange | undefined) =>
-                              setDateRange(r ?? { from: undefined, to: undefined })
+                            onSelect={(r) =>
+                              setDateRange(r || { from: undefined, to: undefined })
                             }
                             numberOfMonths={2}
                             className="rounded-md border"
@@ -437,7 +456,7 @@ export default function ToolShareApp() {
 }
 
 // ---------------- Components ----------------
-function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }: any) {
+function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/80 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3">
@@ -515,7 +534,7 @@ function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }: any
   );
 }
 
-function ListingCard({ listing, premium, showManage }: any) {
+function ListingCard({ listing, premium, showManage }) {
   return (
     <Card className="overflow-hidden group hover:shadow-lg transition-shadow">
       <div className="relative">
@@ -557,7 +576,7 @@ function ListingCard({ listing, premium, showManage }: any) {
   );
 }
 
-function KPI({ title, value, subtitle }: { title: string; value: string; subtitle?: string }) {
+function KPI({ title, value, subtitle }) {
   return (
     <Card className="border-orange-100">
       <CardHeader className="pb-2">
@@ -571,7 +590,7 @@ function KPI({ title, value, subtitle }: { title: string; value: string; subtitl
   );
 }
 
-function CreateListingDialog({ open, onOpenChange }: { open?: boolean; onOpenChange?: (v: boolean) => void }) {
+function CreateListingDialog({ open, onOpenChange }) {
   const [step, setStep] = useState(1);
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -726,7 +745,7 @@ function CreateListingDialog({ open, onOpenChange }: { open?: boolean; onOpenCha
   );
 }
 
-function Plans({ open, onOpenChange, onChoose }: any) {
+function Plans({ open, onOpenChange, onChoose }) {
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="max-w-4xl">
@@ -796,7 +815,7 @@ function Plans({ open, onOpenChange, onChoose }: any) {
   );
 }
 
-function Feature({ children }: any) {
+function Feature({ children }) {
   return (
     <div className="flex items-center gap-2 text-neutral-700">
       <Check className="h-4 w-4 text-orange-600" /> {children}
@@ -881,7 +900,7 @@ if (typeof window !== "undefined") {
       console.assert(t6.length === 1 && t6[0].title === "Mixer", "Test 6 failed");
 
       // Test 7: null-safe fields should not throw and should not match
-      const t7 = filterListings([{ title: null, location: null, category: "power-tools" } as any], "drill", "all");
+      const t7 = filterListings([{ title: null, location: null, category: "power-tools" }], "drill", "all");
       console.assert(Array.isArray(t7) && t7.length === 0, "Test 7 failed");
 
       // Test 8: unknown category blocks results even if query matches
