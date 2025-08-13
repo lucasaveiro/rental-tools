@@ -1,0 +1,25 @@
+# Dependencies
+node_modules/
+
+# Next.js / build
+.next/
+out/
+dist/
+.vercel/
+.next/cache/
+
+# Env files (never commit secrets)
+.env
+.env.local
+.env.*.local
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
