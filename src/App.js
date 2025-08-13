@@ -2,7 +2,7 @@ import React, { useMemo, useState } from "react";
 import {
   Wrench,
   Hammer,
-  Drill,
+  PlugZap,
   // Saw,            // removed: not exported by lucide-react ESM CDN
   // Crane,          // removed: not exported by lucide-react ESM CDN
   HardHat,
@@ -90,7 +90,7 @@ export function filterListings(listings, q, activeCategory) {
 // ---------------- Mock Data ----------------
 const categories = [
   { key: "all", label: "All", icon: Wrench },
-  { key: "power-tools", label: "Power Tools", icon: Drill },
+  { key: "power-tools", label: "Power Tools", icon: PlugZap },
   { key: "woodworking", label: "Woodworking", icon: Ruler }, // replaced Saw -> Ruler (exported)
   { key: "construction", label: "Construction", icon: HardHat }, // replaced Crane -> HardHat (exported)
   { key: "transport", label: "Transport", icon: Truck },
