@@ -13,9 +13,6 @@ import {
   Star,
   Plus,
   Search,
-  LogIn,
-  LogOut,
-  User,
   Settings,
   ShieldCheck,
   DollarSign,
@@ -233,7 +230,6 @@ const allListings = [
 // ---------------- Main App ----------------
 export default function ToolShareApp() {
   const [role, setRole] = useState("customer");
-  const [logged, setLogged] = useState(false);
   const [query, setQuery] = useState("");
   const [activeCategory, setActiveCategory] = useState("all");
   // Ensure a consistent shape for the date range to avoid runtime/build issues.
@@ -249,8 +245,6 @@ export default function ToolShareApp() {
       <TopNav
         role={role}
         setRole={setRole}
-        logged={logged}
-        setLogged={setLogged}
         onCreate={() => setShowCreate(true)}
         onOpenPlans={() => setShowPlans(true)}
       />
@@ -507,7 +501,7 @@ export default function ToolShareApp() {
             <TabsContent value="overview">
               <Card>
                 <CardHeader>
-                  <CardTitle>Welcome {logged ? "MaxTools Pro" : "Business"}</CardTitle>
+                  <CardTitle>Welcome Business</CardTitle>
                   <CardDescription>Manage your tools, availability, pricing and bookings.</CardDescription>
                 </CardHeader>
                 <CardContent className="grid gap-4 md:grid-cols-3">
@@ -582,7 +576,14 @@ export default function ToolShareApp() {
 }
 
 // ---------------- Components ----------------
-function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }) {
+const navLinks = [
+  { label: "How it works", href: "#" },
+  { label: "Categories", href: "#" },
+  { label: "Safety", href: "#" },
+  { label: "Support", href: "#" },
+];
+
+function TopNav({ role, setRole, onCreate, onOpenPlans }) {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-neutral-50/80 backdrop-blur">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2 text-sm">
@@ -592,10 +593,13 @@ function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }) {
           <Badge variant="secondary" className="ml-2">Beta</Badge>
         </div>
         <nav className="hidden md:flex items-center gap-6">
-          <a className="hover:text-orange-600" href="#">How it works</a>
-          <a className="hover:text-orange-600" href="#">Categories</a>
-          <a className="hover:text-orange-600" href="#">Safety</a>
-          <a className="hover:text-orange-600" href="#">Support</a>
+ codex/refactor-interface-design-and-layout-ojhcsr
+          {navLinks.map((l) => (
+            <a key={l.label} className="hover:text-orange-600" href={l.href}>
+             {l.label}
+             </a>
+          ))}
+ main
         </nav>
         <div className="flex items-center gap-2">
           <Sheet>
@@ -606,10 +610,13 @@ function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }) {
             </SheetTrigger>
             <SheetContent side="left" className="w-64">
               <nav className="mt-4 flex flex-col gap-4 text-sm">
-                <a href="#">How it works</a>
-                <a href="#">Categories</a>
-                <a href="#">Safety</a>
-                <a href="#">Support</a>
+codex/refactor-interface-design-and-layout-ojhcsr
+                {navLinks.map((l) => (
+                  <a key={l.label} href={l.href}>
+                   {l.label}
+                  </a>
+                ))}
+main
               </nav>
             </SheetContent>
           </Sheet>
@@ -622,47 +629,50 @@ function TopNav({ role, setRole, logged, setLogged, onCreate, onOpenPlans }) {
               <Plus className="mr-2 h-4 w-4" /> New listing
             </Button>
           )}
+ codex/refactor-interface-design-and-layout-ojhcsr
           <Dialog>
-            <DialogTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <User className="h-5 w-5" />
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-md">
-              <DialogHeader>
-                <DialogTitle>{logged ? "Your account" : "Welcome back"}</DialogTitle>
-                <DialogDescription>
-                  {logged ? "Manage your profile and preferences." : "Sign in to book or manage your listings."}
-                </DialogDescription>
-              </DialogHeader>
-              {logged ? (
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Avatar>
-                      <AvatarImage src="https://i.pravatar.cc/100?img=67" />
-                      <AvatarFallback>MX</AvatarFallback>
-                    </Avatar>
-                    <div>
-                      <div className="font-medium">MaxTools Pro</div>
-                      <div className="text-xs text-neutral-500">Business - Premium</div>
-                    </div>
+          <DialogTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <User className="h-5 w-5" />
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="max-w-md">
+            <DialogHeader>
+              <DialogTitle>{logged ? "Your account" : "Welcome back"}</DialogTitle>
+              <DialogDescription>
+                {logged ? "Manage your profile and preferences." : "Sign in to book or manage your listings."}
+              </DialogDescription>
+            </DialogHeader>
+            {logged ? (
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <Avatar>
+                    <AvatarImage src="https://i.pravatar.cc/100?img=67" />
+                    <AvatarFallback>MX</AvatarFallback>
+                  </Avatar>
+                  <div>
+                    <div className="font-medium">MaxTools Pro</div>
+                    <div className="text-xs text-neutral-500">Business - Premium</div>
                   </div>
-                  <Button variant="outline" onClick={() => setLogged(false)}>
-                    <LogOut className="mr-2 h-4 w-4" /> Sign out
-                  </Button>
                 </div>
-              ) : (
-                <div className="grid gap-3">
-                  <Input placeholder="Email" />
-                  <Input placeholder="Password" type="password" />
-                  <Button className="bg-orange-600 hover:bg-orange-700" onClick={() => setLogged(true)}>
-                    <LogIn className="mr-2 h-4 w-4" /> Sign in
-                  </Button>
-                  <Button variant="outline">Create account</Button>
-                </div>
-              )}
-            </DialogContent>
-          </Dialog>
+                <Button variant="outline" onClick={() => setLogged(false)}>
+                  <LogOut className="mr-2 h-4 w-4" /> Sign out
+                </Button>
+              </div>
+            ) : (
+              <div className="grid gap-3">
+                <Input placeholder="Email" />
+                <Input placeholder="Password" type="password" />
+                <Button className="bg-orange-600 hover:bg-orange-700" onClick={() => setLogged(true)}>
+                  <LogIn className="mr-2 h-4 w-4" /> Sign in
+                </Button>
+                <Button variant="outline">Create account</Button>
+              </div>
+            )}
+          </DialogContent>
+        </Dialog>
+
+ main
           <Button className="bg-orange-600 hover:bg-orange-700 rounded-full px-4" onClick={onOpenPlans}>
             <Star className="mr-2 h-4 w-4" /> Premium
           </Button>
